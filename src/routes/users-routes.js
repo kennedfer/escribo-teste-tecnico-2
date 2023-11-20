@@ -21,7 +21,7 @@ export const signupUser = async (request, reply) => {
         try {
             const user = await newUser.save();
             const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
-                expiresIn: '24h'
+                expiresIn: '30m'
             })
 
             const hashToken = await bcrypt.hash(token, salt);
@@ -44,22 +44,37 @@ export const signupUser = async (request, reply) => {
 }
 
 export const longinUser = async (request, reply) => {
-    const { email, password } = new Users(request.body);
-    const dbUser = await Users.findOne({ email });
+    const { email, senha } = new Users(request.body);
+    const user = await Users.findOne({ email });
 
     //CONSIDERANDO QUE A POHA DA ROTA VAI TER UMA VALIDAÇÃO DE EMAIL AAAAAAA
     try {
-        const isPasswordMatch = await bcrypt.compare(password, dbUser.password);
+        const isPasswordMatch = await bcrypt.compare(senha, user.senha);
         if (isPasswordMatch) {
-            const token = jwt.sign({ id: dbUser._id }, process.env.JWT_SECRET, {
-                expiresIn: '24h'
+            const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
+                expiresIn: '30m'
             })
-            reply.send({ token, userId: dbUser._id });
+            const salt = await bcrypt.genSalt(10);
+
+            const hashToken = await bcrypt.hash(token, salt);
+
+            console.log(user);
+
+            let response = {
+                id: user['_id'],
+                data_criacao: user['data_criacao'],
+                data_atualizacao: user['data_atualizacao'],
+                ultimo_login: user['ultimo_login'],
+                token: hashToken
+            }
+
+
+            reply.send(response);
         } else {
             reply.code(400).send("senha errada meu comparça");
         }
 
     } catch (error) {
-        reply.code(500).send("Error ao comparar as senhas");
+        reply.code(500).send("Error ao comparar as senhas " + error.message);
     }
 }

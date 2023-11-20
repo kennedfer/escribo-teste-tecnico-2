@@ -1,4 +1,4 @@
-import { usersRoutes } from "../routes/index";
+import { usersRoutes } from "../routes/index.js";
 
 export const usersController = [
     (fastify, options, done) => {

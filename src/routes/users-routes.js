@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { Users } from '../models/models';
 
 export const signupUser = async (request, reply) => {
     try {
@@ -12,8 +13,8 @@ export const signupUser = async (request, reply) => {
 
         const newUser = new Users(userData);
         try {
-            await newUser.save();
-            reply.send("user salvo");
+            const user = await newUser.save();
+            reply.send(user);
         } catch (error) {
             reply.code(500).send("Erro nao criação do usuario");
         }

@@ -19,7 +19,7 @@ export const usersController = [
             "/login",
             {
                 preHandler: [
-                    // usersHooks.userEmailExistsInDatabase
+                    usersHooks.emailNotRegistered
                 ],
             },
             usersRoutes.longinUser

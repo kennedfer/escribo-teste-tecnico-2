@@ -11,14 +11,32 @@ export const signupUser = async (request, reply) => {
 
         userData.senha = hashPassword;
 
-        console.log(userData);
+        const dateNow = Date.now();
+
+        userData.data_criacao = dateNow;
+        userData.data_atualizacao = dateNow;
+        userData.ultimo_login = dateNow;
 
         const newUser = new Users(userData);
         try {
             const user = await newUser.save();
-            reply.send(user);
+            const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
+                expiresIn: '24h'
+            })
+
+            const hashToken = await bcrypt.hash(token, salt);
+
+            let response = {
+                id: user['_id'],
+                data_criacao: user['data_criacao'],
+                data_atualizacao: user['data_atualizacao'],
+                ultimo_login: user['ultimo_login'],
+                token: hashToken
+            }
+
+            reply.send(response);
         } catch (error) {
-            reply.code(500).send("Erro nao criação do usuario");
+            reply.code(500).send("Erro nao criação do usuario " + error.message);
         }
     } catch (error) {
         reply.code(400).send("Erro no haash");

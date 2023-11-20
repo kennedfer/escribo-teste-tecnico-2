@@ -16,12 +16,6 @@ const userSchema = new Schema({
         required: true
     },
 
-    telefones: {
-        type: [Object],
-        default: [],
-        required: true
-    },
-
     data_criacao: {
         type: Date,
         required: true
@@ -34,6 +28,12 @@ const userSchema = new Schema({
 
     ultimo_login: {
         type: Date,
+        required: true
+    },
+
+    telefones: {
+        type: [Object],
+        default: [],
         required: true
     }
 });

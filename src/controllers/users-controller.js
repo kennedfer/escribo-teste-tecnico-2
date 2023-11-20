@@ -1,3 +1,4 @@
+import { usersHooks } from "../hooks/index.js";
 import { usersRoutes } from "../routes/index.js";
 
 export const usersController = [
@@ -6,7 +7,7 @@ export const usersController = [
             "/signup",
             {
                 preHandler: [
-                    // usersHooks.userEmailAlreadyExistsInDatabase
+                    usersHooks.emailIsAlreadyUsed
                 ],
             },
             usersRoutes.signupUser

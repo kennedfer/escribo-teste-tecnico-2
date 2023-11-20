@@ -1,1 +1,1 @@
-export * as hooks from './hooks.js'
+export * as usersHooks from './users-hooks.js'

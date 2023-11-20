@@ -3,7 +3,7 @@ import { usersRoutes } from "../routes/index.js";
 export const usersController = [
     (fastify, options, done) => {
         fastify.post(
-            "/users/signup",
+            "/signup",
             {
                 preHandler: [
                     // usersHooks.userEmailAlreadyExistsInDatabase
@@ -15,7 +15,7 @@ export const usersController = [
     },
     (fastify, options, done) => {
         fastify.post(
-            "/users/login",
+            "/login",
             {
                 preHandler: [
                     // usersHooks.userEmailExistsInDatabase

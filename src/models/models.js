@@ -20,6 +20,21 @@ const userSchema = new Schema({
         type: [Object],
         default: [],
         required: true
+    },
+
+    data_criacao: {
+        type: Date,
+        required: true
+    },
+
+    data_atualizacao: {
+        type: Date,
+        required: true
+    },
+
+    ultimo_login: {
+        type: Date,
+        required: true
     }
 });
 

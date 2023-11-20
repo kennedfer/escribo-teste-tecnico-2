@@ -1,15 +1,17 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Users } from '../models/models';
+import { Users } from '../models/models.js';
 
 export const signupUser = async (request, reply) => {
     try {
         const userData = request.body;
 
         const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(userData.password, salt);
+        const hashPassword = await bcrypt.hash(userData.senha, salt);
 
-        userData.password = hashPassword;
+        userData.senha = hashPassword;
+
+        console.log(userData);
 
         const newUser = new Users(userData);
         try {
@@ -19,7 +21,7 @@ export const signupUser = async (request, reply) => {
             reply.code(500).send("Erro nao criação do usuario");
         }
     } catch (error) {
-        reply.code(400).send("Erro no hash");
+        reply.code(400).send("Erro no haash");
     }
 }
 

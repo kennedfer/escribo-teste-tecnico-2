@@ -1,3 +1,4 @@
+import fastify from "fastify";
 import { usersHooks } from "../hooks/index.js";
 import { usersRoutes } from "../routes/index.js";
 
@@ -26,4 +27,11 @@ export const usersController = [
         );
         done();
     },
+    (fastify, options, done) => {
+        fastify.get(
+            "/user",
+            usersRoutes.getUser
+        );
+        done();
+    }
 ]

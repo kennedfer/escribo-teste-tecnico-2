@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Users } from '../models/models.js';
+import { errorsMessages } from '../utils/errors.js';
 
 export const signupUser = async (request, reply) => {
     try {
@@ -24,14 +25,12 @@ export const signupUser = async (request, reply) => {
                 expiresIn: '30m'
             })
 
-            const hashToken = await bcrypt.hash(token, salt);
-
             let response = {
                 id: user['_id'],
                 data_criacao: user['data_criacao'],
                 data_atualizacao: user['data_atualizacao'],
                 ultimo_login: user['ultimo_login'],
-                token: hashToken
+                token
             }
 
             reply.send(response);
@@ -54,27 +53,29 @@ export const longinUser = async (request, reply) => {
             const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
                 expiresIn: '30m'
             })
-            const salt = await bcrypt.genSalt(10);
-
-            const hashToken = await bcrypt.hash(token, salt);
-
-            console.log(user);
 
             let response = {
                 id: user['_id'],
                 data_criacao: user['data_criacao'],
                 data_atualizacao: user['data_atualizacao'],
                 ultimo_login: user['ultimo_login'],
-                token: hashToken
+                token
             }
 
 
             reply.send(response);
         } else {
-            reply.code(400).send("senha errada meu comparça");
+            reply.code(401).send({ mensagem: errorsMessages.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD });
         }
 
     } catch (error) {
-        reply.code(500).send("Error ao comparar as senhas " + error.message);
+        reply.code(401).send({ mensagem: errorsMessages.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD });
     }
 }
+
+export const getUser = (request, reply) => {
+    const token = request.headers.authorization.split(" ")[1];
+    const userId = jwt.decode(token).id;
+
+    reply.send(userId);
+} 

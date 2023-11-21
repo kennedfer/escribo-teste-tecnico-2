@@ -54,8 +54,10 @@ export const longinUser = async (request, reply) => {
         const isPasswordMatch = await bcrypt.compare(senha, user.senha);
         if (isPasswordMatch) {
             const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
-                expiresIn: '10s'
+                expiresIn: '30m'
             })
+
+            user.ultimo_login = new Date(Date.now());
 
             let response = {
                 id: user['_id'],

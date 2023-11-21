@@ -73,9 +73,16 @@ export const longinUser = async (request, reply) => {
     }
 }
 
-export const getUser = (request, reply) => {
-    const token = request.headers.authorization.split(" ")[1];
+export const getUser = async (request, reply) => {
+    const token = request.headers.authorization?.split(" ")[1];
     const userId = jwt.decode(token).id;
 
-    reply.send(userId);
+    try {
+        const user = await Users.findById(userId);
+        if (user == null) reply.send({
+            mensagem: errorsMessages.INVALID_TOKEN
+        });
+    } catch (error) {
+        reply.send(error);
+    }
 } 

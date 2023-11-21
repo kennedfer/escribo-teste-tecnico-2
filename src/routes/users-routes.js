@@ -1,25 +1,28 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Users } from '../models/models.js';
-import { errorsMessages } from '../utils/errors.js';
-import { ObjectId } from 'mongodb';
+import { friendlyErrors } from '../utils/errors.js';
+import { encryptUtils } from '../utils/index.js';
 
 export const signupUser = async (request, reply) => {
     try {
-        const userData = request.body;
-
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(userData.senha, salt);
-
-        userData.senha = hashPassword;
-
         const dateNow = new Date(Date.now());
 
-        userData.data_criacao = dateNow;
-        userData.data_atualizacao = dateNow;
-        userData.ultimo_login = dateNow;
+        const userData = {
+            ...request.body,
+            data_criacao: dateNow,
+            data_atualizacao: dateNow,
+            ultimo_login: dateNow
+
+        }
+
+        // const salt = await bcrypt.genSalt(10);
+        // const hashPassword = await bcrypt.hash(userData.senha, salt);
+        userData.senha = encryptUtils.hashEncrypt(userData.senha);
+
 
         const newUser = new Users(userData);
+
         try {
             const user = await newUser.save();
             const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
@@ -51,8 +54,8 @@ export const longinUser = async (request, reply) => {
 
     //! ATUALIZAR A DATA DO ULTIMO LOGIINNN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     try {
-        const isPasswordMatch = await bcrypt.compare(senha, user.senha);
-        if (isPasswordMatch) {
+        const passwordMatch = await bcrypt.compare(senha, user.senha);
+        if (passwordMatch) {
             const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
                 expiresIn: '30m'
             })
@@ -71,11 +74,11 @@ export const longinUser = async (request, reply) => {
 
             reply.send(response);
         } else {
-            reply.code(401).send({ mensagem: errorsMessages.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD });
+            reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
         }
 
     } catch (error) {
-        reply.code(401).send({ mensagem: errorsMessages.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD });
+        reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
     }
 }
 
@@ -90,22 +93,16 @@ export const getUser = async (request, reply) => {
         console.log(user);
         console.log(userId)
 
-        if (user == null) reply.send({
-            mensagem: errorsMessages.INVALID_TOKEN
-        });
+        if (user == null) reply.send(friendlyErrors.INVALID_TOKEN);
 
         reply.send(user);
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
-            reply.send({
-                mensagem: errorsMessages.EXPIRED_TOKEN
-            });
+            reply.send(friendlyErrors.INVALID_TOKEN);
         }
 
         else if (error.name === 'JsonWebTokenError')
-            reply.send({
-                mensagem: errorsMessages.INVALID_TOKEN
-            });
+            reply.send(friendlyErrors.EXPIRED_TOKEN);
 
     }
 } 

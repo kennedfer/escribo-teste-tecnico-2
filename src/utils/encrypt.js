@@ -6,6 +6,6 @@ export const hashEncrypt = (data) => {
     return bcrypt.hashSync(data, saltRounds);
 }
 
-export const compare = (data, encryptData) => {
+export const match = (data, encryptData) => {
     return bcrypt.compareSync(data, encryptData);
 }

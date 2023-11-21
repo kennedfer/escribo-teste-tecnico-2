@@ -19,4 +19,5 @@ export async function dontHasAuthorizationHeader(request, reply) {
     if (!request.headers.authorization)
         reply.send(friendlyErrors.INVALID_TOKEN);
 
+    request.token = request.headers.authorization.replace(/^Bearer\s/, '');
 }

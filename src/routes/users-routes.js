@@ -1,7 +1,6 @@
-import jwt from 'jsonwebtoken';
 import { Users } from '../models/models.js';
 import { friendlyErrors } from '../utils/errors.js';
-import { dateUtils, encryptUtils, tokensUtils } from '../utils/index.js';
+import { dateUtils, encryptUtils, responseUtils, tokensUtils } from '../utils/index.js';
 
 export const signupUser = async (request, reply) => {
     try {
@@ -16,23 +15,13 @@ export const signupUser = async (request, reply) => {
         }
 
         userData.senha = encryptUtils.hashEncrypt(userData.senha);
-
-
         const user = new Users(userData);
 
         try {
             await user.save();
-            const token = tokensUtils.createToken({ id: user["_id"] });
+            user.token = tokensUtils.createToken({ id: user["_id"] });
+            reply.send(responseUtils.createResponse(user));
 
-            let response = {
-                id: user['_id'],
-                data_criacao: user['data_criacao'],
-                data_atualizacao: user['data_atualizacao'],
-                ultimo_login: user['ultimo_login'],
-                token
-            }
-
-            reply.send(response);
         } catch (error) {
             reply.code(500).send("Erro nao criação do usuario " + error.message);
         }
@@ -46,26 +35,14 @@ export const longinUser = async (request, reply) => {
     const user = await Users.findOne({ email });
 
     try {
-        const passwordMatch = encryptUtils.compare(senha, user.senha);
-        if (passwordMatch) {
-            const token = tokensUtils.createToken({ id: user["_id"] });
+        const passwordNotMatch = !encryptUtils.match(senha, user.senha);
+        if (passwordNotMatch) reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
 
-            user.ultimo_login = dateUtils.getCurrentDate();
+        user["ultimo_login"] = dateUtils.getCurrentDate();
+        await user.save();
 
-            let response = {
-                id: user['_id'],
-                data_criacao: user['data_criacao'],
-                data_atualizacao: user['data_atualizacao'],
-                ultimo_login: user['ultimo_login'],
-                token
-            }
-
-            await user.save();
-
-            reply.send(response);
-        } else {
-            reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
-        }
+        user.token = tokensUtils.createToken({ id: user["_id"] });
+        reply.send(responseUtils.createResponse(user));
 
     } catch (error) {
         reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
@@ -73,15 +50,9 @@ export const longinUser = async (request, reply) => {
 }
 
 export const getUser = async (request, reply) => {
-
-    const token = request.headers.authorization.replace(/^Bearer\s/, '');
-
     try {
-        const userId = jwt.verify(token, process.env.JWT_SECRET).id;
-
+        const userId = tokensUtils.verifyToken(request.token);
         const user = await Users.findById(userId);
-        console.log(user);
-        console.log(userId)
 
         if (user == null) reply.send(friendlyErrors.INVALID_TOKEN);
 

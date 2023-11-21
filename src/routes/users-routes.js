@@ -1,6 +1,6 @@
 import { Users } from '../models/models.js';
 import { friendlyErrors } from '../utils/errors.js';
-import { dateUtils, encryptUtils, responseUtils, tokensUtils } from '../utils/index.js';
+import { dateUtils, encryptUtils, responseUtils, tokensUtils, usersUtils } from '../utils/index.js';
 
 export const signupUser = async (request, reply) => {
     try {
@@ -45,7 +45,7 @@ export const longinUser = async (request, reply) => {
         reply.send(responseUtils.createResponse(user));
 
     } catch (error) {
-        reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
+        reply.send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
     }
 }
 
@@ -54,16 +54,23 @@ export const getUser = async (request, reply) => {
         const userId = tokensUtils.verifyToken(request.token);
         const user = await Users.findById(userId);
 
-        if (user == null) reply.send(friendlyErrors.INVALID_TOKEN);
+        if (usersUtils.userIsNull(user)) reply.send(friendlyErrors.INVALID_TOKEN);
 
         reply.send(user);
     } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-            reply.send(friendlyErrors.INVALID_TOKEN);
+        switch (error.name) {
+            case 'TokenExpiredError': {
+                reply.send(friendlyErrors.EXPIRED_TOKEN);
+                break;
+            }
+            case 'JsonWebTokenError': {
+                reply.send(friendlyErrors.INVALID_TOKEN);
+                break;
+            }
+            default: {
+                reply.send(friendlyErrors.INTERNAL_SERVER_ERROR_TRY_AGAIN);
+            }
         }
-
-        else if (error.name === 'JsonWebTokenError')
-            reply.send(friendlyErrors.EXPIRED_TOKEN);
 
     }
 } 

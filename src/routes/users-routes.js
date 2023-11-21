@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Users } from '../models/models.js';
 import { errorsMessages } from '../utils/errors.js';
+import { ObjectId } from 'mongodb';
 
 export const signupUser = async (request, reply) => {
     try {
@@ -53,7 +54,7 @@ export const longinUser = async (request, reply) => {
         const isPasswordMatch = await bcrypt.compare(senha, user.senha);
         if (isPasswordMatch) {
             const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
-                expiresIn: '30m'
+                expiresIn: '10s'
             })
 
             let response = {
@@ -75,20 +76,33 @@ export const longinUser = async (request, reply) => {
     }
 }
 
-export const getUser = (request, reply) => {
+export const getUser = async (request, reply) => {
 
     const token = request.headers.authorization.replace(/^Bearer\s/, '');
-    const userId = jwt.decode(token).id;
-
 
     try {
-        const user = Users.findById(userId);
-        if (user != null) reply.send({
+        const userId = jwt.verify(token, process.env.JWT_SECRET).id;
+
+        const user = await Users.findById(userId);
+        console.log(user);
+        console.log(userId)
+
+        if (user == null) reply.send({
             mensagem: errorsMessages.INVALID_TOKEN
         });
 
         reply.send(user);
     } catch (error) {
-        reply.send(error);
+        if (error.name === 'TokenExpiredError') {
+            reply.send({
+                mensagem: errorsMessages.EXPIRED_TOKEN
+            });
+        }
+
+        else if (error.name === 'JsonWebTokenError')
+            reply.send({
+                mensagem: errorsMessages.INVALID_TOKEN
+            });
+
     }
 } 

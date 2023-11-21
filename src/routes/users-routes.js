@@ -47,6 +47,8 @@ export const longinUser = async (request, reply) => {
     const user = await Users.findOne({ email });
 
     //CONSIDERANDO QUE A POHA DA ROTA VAI TER UMA VALIDAÇÃO DE EMAIL AAAAAAA
+
+    //! ATUALIZAR A DATA DO ULTIMO LOGIINNN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     try {
         const isPasswordMatch = await bcrypt.compare(senha, user.senha);
         if (isPasswordMatch) {
@@ -73,7 +75,8 @@ export const longinUser = async (request, reply) => {
     }
 }
 
-export const getUser = async (request, reply) => {
+export const getUser = (request, reply) => {
+    console.log("aaaaaaaaaa");
     try {
         console.log("aaaaaaaaaa");
 
@@ -82,7 +85,7 @@ export const getUser = async (request, reply) => {
 
 
         try {
-            const user = await Users.findById(userId);
+            const user = Users.findById(userId);
             if (user != null) reply.send({
                 mensagem: errorsMessages.INVALID_TOKEN
             });

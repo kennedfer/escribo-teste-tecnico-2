@@ -76,26 +76,19 @@ export const longinUser = async (request, reply) => {
 }
 
 export const getUser = (request, reply) => {
-    console.log("aaaaaaaaaa");
+
+    const token = request.headers.authorization.replace(/^Bearer\s/, '');
+    const userId = jwt.decode(token).id;
+
+
     try {
-        console.log("aaaaaaaaaa");
+        const user = Users.findById(userId);
+        if (user != null) reply.send({
+            mensagem: errorsMessages.INVALID_TOKEN
+        });
 
-        const token = request.headers.authorization.replace(/^Bearer\s/, '');
-        const userId = jwt.decode(token).id;
-
-
-        try {
-            const user = Users.findById(userId);
-            if (user != null) reply.send({
-                mensagem: errorsMessages.INVALID_TOKEN
-            });
-
-            reply.send(user);
-        } catch (error) {
-            reply.send(error);
-        }
+        reply.send(user);
     } catch (error) {
-        console.log(error);
-        reply.send(error)
+        reply.send(error);
     }
 } 

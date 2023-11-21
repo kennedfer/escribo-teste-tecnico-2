@@ -67,6 +67,7 @@ export const longinUser = async (request, reply) => {
                 token
             }
 
+            await user.save();
 
             reply.send(response);
         } else {

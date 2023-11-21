@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { Users } from '../models/models.js';
 import { friendlyErrors } from '../utils/errors.js';
-import { encryptUtils } from '../utils/index.js';
+import { dateUtils, encryptUtils, tokensUtils } from '../utils/index.js';
 
 export const signupUser = async (request, reply) => {
     try {
-        const dateNow = new Date(Date.now());
+        const dateNow = dateUtils.getCurrentDate();
 
         const userData = {
             ...request.body,
@@ -16,18 +15,14 @@ export const signupUser = async (request, reply) => {
 
         }
 
-        // const salt = await bcrypt.genSalt(10);
-        // const hashPassword = await bcrypt.hash(userData.senha, salt);
         userData.senha = encryptUtils.hashEncrypt(userData.senha);
 
 
-        const newUser = new Users(userData);
+        const user = new Users(userData);
 
         try {
-            const user = await newUser.save();
-            const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
-                expiresIn: '30m'
-            })
+            await user.save();
+            const token = tokensUtils.createToken({ id: user["_id"] });
 
             let response = {
                 id: user['_id'],
@@ -47,20 +42,15 @@ export const signupUser = async (request, reply) => {
 }
 
 export const longinUser = async (request, reply) => {
-    const { email, senha } = new Users(request.body);
+    const { email, senha } = request.body;
     const user = await Users.findOne({ email });
 
-    //CONSIDERANDO QUE A POHA DA ROTA VAI TER UMA VALIDAÇÃO DE EMAIL AAAAAAA
-
-    //! ATUALIZAR A DATA DO ULTIMO LOGIINNN AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     try {
-        const passwordMatch = await bcrypt.compare(senha, user.senha);
+        const passwordMatch = encryptUtils.compare(senha, user.senha);
         if (passwordMatch) {
-            const token = jwt.sign({ id: user["_id"] }, process.env.JWT_SECRET, {
-                expiresIn: '30m'
-            })
+            const token = tokensUtils.createToken({ id: user["_id"] });
 
-            user.ultimo_login = new Date(Date.now());
+            user.ultimo_login = dateUtils.getCurrentDate();
 
             let response = {
                 id: user['_id'],

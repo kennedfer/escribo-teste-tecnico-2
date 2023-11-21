@@ -2,7 +2,7 @@ import { usersHooks } from "../hooks/index.js";
 import { usersRoutes } from "../routes/index.js";
 
 export const usersController = [
-    (fastify, options, done) => {
+    (fastify, _, done) => {
         fastify.post(
             "/signup",
             {
@@ -14,7 +14,7 @@ export const usersController = [
         );
         done();
     },
-    (fastify, options, done) => {
+    (fastify, _, done) => {
         fastify.post(
             "/login",
             {
@@ -26,7 +26,7 @@ export const usersController = [
         );
         done();
     },
-    (fastify, options, done) => {
+    (fastify, _, done) => {
         fastify.get(
             "/user",
             {

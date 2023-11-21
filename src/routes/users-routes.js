@@ -12,7 +12,7 @@ export const signupUser = async (request, reply) => {
 
         userData.senha = hashPassword;
 
-        const dateNow = Date.now();
+        const dateNow = new Date(Date.now());
 
         userData.data_criacao = dateNow;
         userData.data_atualizacao = dateNow;
@@ -74,15 +74,25 @@ export const longinUser = async (request, reply) => {
 }
 
 export const getUser = async (request, reply) => {
-    const token = request.headers.authorization?.split(" ")[1];
-    const userId = jwt.decode(token).id;
-
     try {
-        const user = await Users.findById(userId);
-        if (user == null) reply.send({
-            mensagem: errorsMessages.INVALID_TOKEN
-        });
+        console.log("aaaaaaaaaa");
+
+        const token = request.headers.authorization.replace(/^Bearer\s/, '');
+        const userId = jwt.decode(token).id;
+
+
+        try {
+            const user = await Users.findById(userId);
+            if (user != null) reply.send({
+                mensagem: errorsMessages.INVALID_TOKEN
+            });
+
+            reply.send(user);
+        } catch (error) {
+            reply.send(error);
+        }
     } catch (error) {
-        reply.send(error);
+        console.log(error);
+        reply.send(error)
     }
 } 

@@ -18,3 +18,18 @@ export async function emailNotRegistered(request, reply) {
         message: errorsMessages.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD
     });
 }
+
+export function dontHasAuthorizationHeader(request, reply) {
+    //fazer funçoes aaaaaaaaaa
+    console.log("eososo");
+    try {
+        if (!request.headers.authorization)
+            reply.send({
+                mensagem: errorsMessages.INVALID_TOKEN
+            });
+        console.log("saiu");
+    } catch (error) {
+        console.error('Erro:', error);
+        reply.code(500).send('Erro interno do servidor');
+    }
+}

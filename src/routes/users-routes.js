@@ -23,10 +23,10 @@ export const signupUser = async (request, reply) => {
             reply.send(responseUtils.createResponse(user));
 
         } catch (error) {
-            reply.code(500).send("Erro nao criação do usuario " + error.message);
+            reply.send(friendlyErrors.INTERNAL_SERVER_ERROR_TRY_AGAIN);
         }
     } catch (error) {
-        reply.code(400).send("Erro no haash");
+        reply.send(friendlyErrors.INTERNAL_SERVER_ERROR);
     }
 }
 

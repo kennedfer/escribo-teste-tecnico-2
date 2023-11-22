@@ -44,6 +44,7 @@ export const longinUser = async (request, reply) => {
         reply.send(responseUtils.createResponse(user));
 
     } catch (error) {
+        console.log(error);
         reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
     }
 }

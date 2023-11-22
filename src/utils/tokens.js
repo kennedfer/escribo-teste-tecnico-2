@@ -9,12 +9,6 @@ const TOKEN_OPTIONS = {
 }
 
 /**
- * Chave secreta usada para assinar e verificar tokens JWT.
- * @constant {string}
- */
-const JWT_SECRET = process.env.JWT_SECRET;
-
-/**
  * Cria um token JWT com base no payload fornecido.
  *
  * @param {Object} payload - O payload a ser incluído no token.
@@ -28,7 +22,7 @@ export const createToken = (payload) => {
      * @param {Object} TOKEN_OPTIONS - Opções para a criação do token, incluindo o tempo de expiração.
      * @returns {string} O token JWT gerado.
      */
-    return jwt.sign(payload, JWT_SECRET, TOKEN_OPTIONS);
+    return jwt.sign(payload, process.env.JWT_SECRET, TOKEN_OPTIONS);
 }
 
 /**
@@ -48,5 +42,5 @@ export const verifyTokenAndGetId = (token) => {
     * @throws {JsonWebTokenError} Se o token não for válido.
     * @throws {TokenExpiredError} Se o token tiver expirado.
      */
-    return jwt.verify(token, JWT_SECRET).id;
+    return jwt.verify(token, process.env.JWT_SECRET).id;
 }

@@ -11,8 +11,7 @@ export const signupUser = async (request, reply) => {
             data_criacao: dateNow,
             data_atualizacao: dateNow,
             ultimo_login: dateNow
-
-        }
+        };
 
         userData.senha = encryptUtils.hashEncrypt(userData.senha);
         const user = new Users(userData);

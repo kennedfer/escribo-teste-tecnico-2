@@ -51,7 +51,7 @@ export const longinUser = async (request, reply) => {
 
 export const getUser = async (request, reply) => {
     try {
-        const userId = tokensUtils.verifyToken(request.token);
+        const userId = tokensUtils.verifyTokenAndGetId(request.token);
         const user = await Users.findById(userId);
 
         if (usersUtils.userIsNull(user)) reply.send(friendlyErrors.INVALID_TOKEN);

@@ -1,8 +1,20 @@
 import { usersHooks } from "../hooks/index.js";
 import { usersRoutes } from "../routes/index.js";
 
+/**
+ * Controlador para as rotas relacionadas a usuários.
+ * @type {Array<Function>}
+ */
 export const usersController = [
-    (fastify, _, done) => {
+    /**
+     * Rota para registrar um novo usuário.
+     *
+     * @param {FastifyInstance} fastify - Instância do Fastify.
+     * @param {Object} options - Objeto de configuração (não utilizado neste contexto).
+     * @param {Function} done - Função de callback para sinalizar que a operação foi concluída.
+     * @returns {void}
+     */
+    (fastify, options, done) => {
         fastify.post(
             "/signup",
             {
@@ -14,7 +26,16 @@ export const usersController = [
         );
         done();
     },
-    (fastify, _, done) => {
+
+    /**
+     * Rota para realizar o login de um usuário.
+     *
+     * @param {Object} fastify - Instância do Fastify.
+     * @param {Object} options - Objeto de configuração (não utilizado neste contexto).
+     * @param {Function} done - Função de callback para sinalizar que a operação foi concluída.
+     * @returns {void}
+     */
+    (fastify, options, done) => {
         fastify.post(
             "/login",
             {
@@ -26,7 +47,16 @@ export const usersController = [
         );
         done();
     },
-    (fastify, _, done) => {
+
+    /**
+     * Rota para obter informações de um usuário autenticado.
+     *
+     * @param {Object} fastify - Instância do Fastify.
+     * @param {Object} options - Objeto de configuração (não utilizado neste contexto).
+     * @param {Function} done - Função de callback para sinalizar que a operação foi concluída.
+     * @returns {void}
+     */
+    (fastify, options, done) => {
         fastify.get(
             "/user",
             {
@@ -34,8 +64,8 @@ export const usersController = [
                     usersHooks.dontHasAuthorizationHeader
                 ],
             },
-            usersRoutes.getUser
+
         );
         done();
-    },
+    }
 ]

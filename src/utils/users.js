@@ -16,3 +16,23 @@ export const userIsNull = (user) => {
 export const userIsNotNull = (user) => {
     return user != null;
 }
+
+/**
+ * Obtém um usúario com base no email do RequestBody
+ *
+ * @param {FastifyRequest} request - a request de onde será retirado o email.
+ * @returns {User | null} Um User apartir do email ou null caso nenhum usuário seja encontrado
+ */
+export const getUserByRequestEmail = async (request) => {
+    /**
+     * @typedef {Object} RequestBody
+     * @property {string} email - O endereço de e-mail fornecido na requisição.
+     */
+    const { email } = request.body;
+
+    /**
+     * Busca um usuário no banco de dados com base no endereço de e-mail fornecido e o retorna.
+     * @type {Object}
+     */
+    return await Users.findOne({ email });
+}

@@ -33,5 +33,6 @@ export * as responseUtils from './response.js'
  * @namespace
  * @property {Function} userIsNull - Função para verificar se um objeto de usuário é nulo
  * @property {Function} userIsNotNull - Função para verificar se um objeto de usuário NÃO é nulo
+ * @property {Function} getUserByRequestEmail - Funão para obter um usúario apartir do email no RequestBody
  */
 export * as usersUtils from './users.js'

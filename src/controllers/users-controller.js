@@ -64,7 +64,7 @@ export const usersController = [
                     usersHooks.dontHasAuthorizationHeader
                 ],
             },
-
+            usersRoutes.getUser
         );
         done();
     }

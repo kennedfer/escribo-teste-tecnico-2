@@ -45,4 +45,11 @@ export const FRIENDLY_ERRORS_RESPONSES = {
      * @property {string} mensagem - A mensagem de erro correspondente.
      */
     INTERNAL_SERVER_ERROR_TRY_AGAIN: { mensagem: "Erro no servidor. Tente novamente mais tarde" },
+
+    /**
+     * Mensagem para o erro de endpoint desconhecido.
+     * @type {Object}
+     * @property {string} mensagem - A mensagem de erro correspondente.
+     */
+    ENDPOINT_NOT_FOUND: { mensagem: "Rota não encontrada" },
 };

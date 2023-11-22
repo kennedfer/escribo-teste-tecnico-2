@@ -1,4 +1,4 @@
-import { Users } from "../models/models";
+import { Users } from "../models/models.js";
 
 /**
  * Verifica se um objeto de usuário é nulo

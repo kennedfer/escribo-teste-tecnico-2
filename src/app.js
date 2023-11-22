@@ -6,9 +6,40 @@ import { notFoundRoute } from "./routes/index.js";
 
 dotenv.config();
 
-const fastify = Fastify({ logger: true });
-fastify.setNotFoundHandler(notFoundRoute.notFound);
-usersController.forEach(controller => fastify.register(controller));
+/**
+ * Cria uma instância do Fastify.
+ * @constant {Object} fastify
+ */
+const FASTIFY = Fastify({ logger: true });
 
+/**
+ * Configura o handler para rotas não encontradas.
+ * @method
+ * @param {Object} notFoundRoute.notFound - O handler para rotas não encontradas.
+ * @returns {void}
+ */
+FASTIFY.setNotFoundHandler(notFoundRoute.notFound);
+
+/**
+ * Registra os controladores das rotas de usuários no Fastify.
+ * @method
+ * @param {Array<Function>} usersController - Array de controladores de usuários.
+ * @returns {void}
+ */
+usersController.forEach(controller => FASTIFY.register(controller));
+
+/**
+ * Conecta-se ao banco de dados MongoDB via mongoose usando a URI fornecida no arquivo de ambiente.
+ * @method
+ * @param {string} process.env.MONGODB_URI - A URI do MongoDB obtida do arquivo de ambiente.
+ * @returns {void}
+ */
 mongoose.connect(process.env.MONGODB_URI);
-fastify.listen({ port: process.env.PORT || 3000 });
+
+/**
+ * Inicia o servidor Fastify, escutando na porta fornecida no arquivo de ambiente ou na porta 3000 por padrão.
+ * @method
+ * @param {Object} process.env.PORT - A porta obtida do arquivo de ambiente ou padrão para 3000.
+ * @returns {void}
+ */
+FASTIFY.listen({ port: process.env.PORT || 3000 });

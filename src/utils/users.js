@@ -34,7 +34,21 @@ export const getUserByRequestEmail = async (request) => {
 
     /**
      * Busca um usuário no banco de dados com base no endereço de e-mail fornecido e o retorna.
-     * @type {Object}
+     * @type {User | null}
      */
     return await Users.findOne({ email });
+}
+
+/**
+ * Obtém um usúario com base no id fornecido
+ *
+ * @param {FastifyRequest} request - a request de onde será retirado o email.
+ * @returns {User | null} Um User apartir do id ou null caso nenhum usuário seja encontrado
+ */
+export const getUserById = async (id) => {
+    /**
+     * Busca um usuário no banco de dados com base no id fornecido e o retorna.
+     * @type {User | null}
+     */
+    return await Users.findById(id)
 }

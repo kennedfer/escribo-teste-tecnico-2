@@ -21,3 +21,23 @@ export const createResponse = (user) => {
         token: user["token"]
     }
 }
+
+/**
+ * Cria um objeto de resposta com informações basicas do usuário.
+ *
+ * @param {Object} user - O objeto de usuário do qual as informações serão extraídas.
+ * @returns {Object} Um objeto de resposta contendo propriedades basicas do usuário seguindo modelo especificado.
+ */
+export const createBasicResponse = (user) => {
+    /**
+     * Objeto de resposta contendo as seguintes propriedades:
+     * @property {string} nome - O nome do usuário, extraído da chave 'nome'.
+     * @property {string} email - O email do usuário, extraído da chave 'email'.
+     * @property {[Object]} telefones - Os telefones salvos extraidas da chave 'telefones'
+     */
+    return {
+        nome: user.nome,
+        email: user.email,
+        telefones: user.telefones
+    }
+}

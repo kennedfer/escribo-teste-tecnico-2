@@ -1,5 +1,5 @@
 import { Users } from '../models/models.js';
-import { friendlyErrors } from '../utils/errors.js';
+import { FRIENDLY_ERRORS_RESPONSES } from '../utils/errors.js';
 import { dateUtils, encryptUtils, responseUtils, tokensUtils, usersUtils } from '../utils/index.js';
 
 export const signupUser = async (request, reply) => {
@@ -23,10 +23,10 @@ export const signupUser = async (request, reply) => {
             reply.send(responseUtils.createResponse(user));
 
         } catch (error) {
-            reply.send(friendlyErrors.INTERNAL_SERVER_ERROR_TRY_AGAIN);
+            reply.send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
         }
     } catch (error) {
-        reply.send(friendlyErrors.INTERNAL_SERVER_ERROR);
+        reply.send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -36,7 +36,7 @@ export const longinUser = async (request, reply) => {
 
     try {
         const passwordNotMatch = !encryptUtils.match(senha, user.senha);
-        if (passwordNotMatch) reply.code(401).send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
+        if (passwordNotMatch) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
 
         user["ultimo_login"] = dateUtils.getCurrentDate();
         await user.save();
@@ -45,7 +45,7 @@ export const longinUser = async (request, reply) => {
         reply.send(responseUtils.createResponse(user));
 
     } catch (error) {
-        reply.send(friendlyErrors.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
+        reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
     }
 }
 
@@ -54,21 +54,21 @@ export const getUser = async (request, reply) => {
         const userId = tokensUtils.verifyTokenAndGetId(request.token);
         const user = await Users.findById(userId);
 
-        if (usersUtils.userIsNull(user)) reply.send(friendlyErrors.INVALID_TOKEN);
+        if (usersUtils.userIsNull(user)) reply.send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
 
         reply.send(user);
     } catch (error) {
         switch (error.name) {
             case 'TokenExpiredError': {
-                reply.send(friendlyErrors.EXPIRED_TOKEN);
+                reply.send(FRIENDLY_ERRORS_RESPONSES.EXPIRED_TOKEN);
                 break;
             }
             case 'JsonWebTokenError': {
-                reply.send(friendlyErrors.INVALID_TOKEN);
+                reply.send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
                 break;
             }
             default: {
-                reply.send(friendlyErrors.INTERNAL_SERVER_ERROR_TRY_AGAIN);
+                reply.send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
             }
         }
 

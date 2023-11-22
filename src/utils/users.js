@@ -1,3 +1,5 @@
+import { Users } from "../models/models";
+
 /**
  * Verifica se um objeto de usuário é nulo
  * @param {Object} user - O objeto de usuário que será verificado.

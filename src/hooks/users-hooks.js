@@ -1,4 +1,3 @@
-import { Users } from "../models/models.js";
 import { FRIENDLY_ERRORS_RESPONSES } from "../utils/errors.js";
 import { usersUtils } from "../utils/index.js";
 

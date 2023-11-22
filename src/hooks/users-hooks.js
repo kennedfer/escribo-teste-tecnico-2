@@ -13,7 +13,7 @@ export const emailIsAlreadyUsed = async (request, reply) => {
      * Obtém o usuário com base no endereço de e-mail fornecido na requisição.
      * @type {Object}
      */
-    const user = usersUtils.getUserByRequestEmail(request);
+    const user = await usersUtils.getUserByRequestEmail(request);
 
     // Verifica se o usuário já existe e envia uma resposta se for o caso.
     if (usersUtils.userIsNotNull(user)) reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_ALREADY_USED);
@@ -31,7 +31,7 @@ export const emailNotRegistered = async (request, reply) => {
      * Obtém o usuário com base no endereço de e-mail fornecido na requisição.
      * @type {Object}
      */
-    const user = usersUtils.getUserByRequestEmail(request);
+    const user = await usersUtils.getUserByRequestEmail(request);
 
     // Verifica se o usuário não existe e envia uma resposta amigável se for o caso.
     if (usersUtils.userIsNull(user)) reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);

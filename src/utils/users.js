@@ -1,6 +1,5 @@
 /**
- * Verifica se um objeto de usuário é nulo ou não
- *
+ * Verifica se um objeto de usuário é nulo
  * @param {Object} user - O objeto de usuário que será verificado.
  * @returns {Boolean} Um boolean 'true' caso o parametro 'user' seja nulo e 'false' caso contrário
  */
@@ -9,10 +8,10 @@ export const userIsNull = (user) => {
 }
 
 /**
- * Verifica se um objeto de usuário é nulo ou não
+ * Verifica se um objeto de usuário não é nulo
  *
  * @param {Object} user - O objeto de usuário que será verificado.
- * @returns {Boolean} Um boolean 'false' caso o parametro 'user' seja nulo e 'true' caso contrário
+ * @returns {Boolean} Um boolean 'true' caso o parametro 'user' NÃO for nulo e 'false' caso contrário
  */
 export const userIsNotNull = (user) => {
     return user != null;

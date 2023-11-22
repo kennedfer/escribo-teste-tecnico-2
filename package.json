@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cls && mocha src/tests/test.js",
     "start": "cls && node src/app.js"
   },
   "author": "kennedfer",
@@ -15,6 +15,7 @@
     "dotenv": "^16.3.1",
     "fastify": "^4.24.3",
     "jsonwebtoken": "^9.0.2",
+    "mocha": "^10.2.0",
     "mongodb": "^6.1.0",
     "mongoose": "^7.5.3"
   }

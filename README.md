@@ -72,4 +72,4 @@ Certifique-se de ajustar os dados nos arquivos de teste de integração de acord
 
 ## Deploy
 Você também pode usar o link do deploy e usar/testar a api sem precisar configura-lo em sua máquina:
-Link do Deploy: Loading
+Link do Deploy: https://escribo-api.onrender.com

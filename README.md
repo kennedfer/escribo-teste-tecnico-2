@@ -8,7 +8,7 @@
 ### 2. Persistência de Dados:
 - Armazenamento persistente de dados do usuário.
 ### 3. Respostas de Erro:
-- Formato padrão:
+- Formato padrão: {mensagem: "mensagem de erro"}
  
 ## Requisitos:
 - Persistência de dados. ✔️

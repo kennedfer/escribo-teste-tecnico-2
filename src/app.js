@@ -49,4 +49,9 @@ mongoose.connect(process.env.MONGODB_URI);
  * @param {Object} process.env.PORT - A porta obtida do arquivo de ambiente ou padrão para 3000.
  * @returns {void}
  */
-FASTIFY.listen({ port: process.env.PORT || 3000 });
+
+try {
+    FASTIFY.listen({ port: process.env.PORT || 3000 });
+} catch (error) {
+    console.log(error);
+}

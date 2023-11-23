@@ -16,14 +16,14 @@ export const emailIsAlreadyUsed = async (request, reply) => {
     const user = await usersUtils.getUserByRequestEmail(request);
 
     // Verifica se o usuário já existe e envia uma resposta se for o caso.
-    if (usersUtils.userIsNotNull(user)) reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_ALREADY_USED);
+    if (usersUtils.userIsNotNull(user)) reply.code(409).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_ALREADY_USED);
 }
 
 /**
  * Verifica se o e-mail não está registrado no sistema.
  *
  * @param {FastifyRequest} request - O objeto de requisição fastify.
- * @param {FastifyReply} reply - O objeto de resposta fastify.
+ * @param {FastifyReply.code()} reply - O objeto de resposta fastify.
  * @returns {void}
  */
 export const emailNotRegistered = async (request, reply) => {
@@ -34,7 +34,7 @@ export const emailNotRegistered = async (request, reply) => {
     const user = await usersUtils.getUserByRequestEmail(request);
 
     // Verifica se o usuário não existe e envia uma resposta amigável se for o caso.
-    if (usersUtils.userIsNull(user)) reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
+    if (usersUtils.userIsNull(user)) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
 }
 
 /**
@@ -47,7 +47,7 @@ export const emailNotRegistered = async (request, reply) => {
 export const dontHasAuthorizationHeader = async (request, reply) => {
     // Verifica se o cabeçalho de autorização está ausente e envia uma resposta amigável se for o caso.
     if (!request.headers.authorization)
-        reply.send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
+        reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
 
     // Substitui "Bearer " no cabeçalho de autorização para obter o token.
     request.token = request.headers.authorization.replace(/^Bearer\s/, '');

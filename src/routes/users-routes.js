@@ -49,11 +49,11 @@ export const signupUser = async (request, reply) => {
 
         } catch (error) {
             // Envia uma resposta de erro amigável em caso de falha no salvamento do usuário.
-            reply.send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
+            reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
         }
     } catch (error) {
         // Envia uma resposta de erro amigável em caso de erro geral.
-        reply.send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR);
+        reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -93,7 +93,7 @@ export const longinUser = async (request, reply) => {
         reply.send(responseUtils.createResponse(user));
 
     } catch (error) {
-        reply.send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
+        reply.code(404).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
     }
 }
 
@@ -113,7 +113,7 @@ export const getUser = async (request, reply) => {
         const user = await usersUtils.getUserById(userId);
 
         // Verifica se o usuário não existe e envia uma resposta de erro amigável.
-        if (usersUtils.userIsNull(user)) reply.send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
+        if (usersUtils.userIsNull(user)) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
 
         // Envia as informações do usuário.
         reply.send(responseUtils.createBasicResponse(user));
@@ -122,16 +122,16 @@ export const getUser = async (request, reply) => {
         // Trata diferentes erros relacionados a tokens.
         switch (error.name) {
             case 'TokenExpiredError': {
-                reply.send(FRIENDLY_ERRORS_RESPONSES.EXPIRED_TOKEN);
+                reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EXPIRED_TOKEN);
                 break;
             }
             case 'JsonWebTokenError': {
-                reply.send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
+                reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
                 break;
             }
             default: {
                 // Envia uma resposta de erro amigável em caso de falha geral.
-                reply.send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
+                reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
             }
         }
     }

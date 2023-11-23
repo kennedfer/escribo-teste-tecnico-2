@@ -45,7 +45,7 @@ export const signupUser = async (request, reply) => {
             user.token = tokensUtils.createToken({ id: user["_id"] });
 
             // Envia uma resposta com os detalhes do usuário.
-            reply.send(responseUtils.createResponse(user));
+            reply.code(201).send(responseUtils.createResponse(user));
 
         } catch (error) {
             // Envia uma resposta de erro amigável em caso de falha no salvamento do usuário.

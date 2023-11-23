@@ -11,6 +11,7 @@
   "author": "kennedfer",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.4.1",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.24.3",
@@ -18,5 +19,8 @@
     "mocha": "^10.2.0",
     "mongodb": "^6.1.0",
     "mongoose": "^7.5.3"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.3"
   }
 }

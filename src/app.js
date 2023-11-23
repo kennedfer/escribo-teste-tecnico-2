@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv'
 import { usersController } from "./controllers/users-controller.js";
 import mongoose from "mongoose";
 import { notFoundRoute } from "./routes/index.js";
+import fastifyCors from '@fastify/cors';
 
 dotenv.config();
 
@@ -10,7 +11,13 @@ dotenv.config();
  * Cria uma instância do Fastify.
  * @constant {Object} fastify
  */
-const FASTIFY = Fastify({ logger: true });
+export const FASTIFY = Fastify({ logger: false });
+
+//Permite que sejam aceitas requisições de qualquer origem
+FASTIFY.register(fastifyCors, {
+    origin: "*",
+    methods: ["GET", "POST"]
+});
 
 /**
  * Configura o handler para rotas não encontradas.

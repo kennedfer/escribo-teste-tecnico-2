@@ -115,6 +115,10 @@ export const getUser = async (request, reply) => {
         // Verifica se o usuário não existe e envia uma resposta de erro amigável.
         if (usersUtils.userIsNull(user)) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
 
+        // Atualiza a propriedade "data_atualizacao" do usuário para a data atual
+        user["data_atualizaca"] = dateUtils.getCurrentDate();
+        await user.save();
+
         // Envia as informações do usuário.
         reply.send(responseUtils.createBasicResponse(user));
 

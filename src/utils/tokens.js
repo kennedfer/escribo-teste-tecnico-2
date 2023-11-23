@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
  */
 const TOKEN_OPTIONS = {
     expiresIn: '30m'
-}
+};
 
 /**
  * Cria um token JWT com base no payload fornecido.
@@ -23,7 +23,7 @@ export const createToken = (payload) => {
      * @returns {string} O token JWT gerado.
      */
     return jwt.sign(payload, process.env.JWT_SECRET, TOKEN_OPTIONS);
-}
+};
 
 /**
  * Verifica a validade de um token JWT e retorna o ID contido no payload.
@@ -43,4 +43,4 @@ export const verifyTokenAndGetId = (token) => {
     * @throws {TokenExpiredError} Se o token tiver expirado.
      */
     return jwt.verify(token, process.env.JWT_SECRET).id;
-}
+};

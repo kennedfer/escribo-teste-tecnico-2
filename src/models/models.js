@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 /**
  * Definição do esquema mongoose para usuários.
@@ -53,4 +53,4 @@ const userSchema = new Schema({
  * Modelo mongoose para usuários.
  * @constant {Model} Users
  */
-export const Users = mongoose.model("Users", userSchema);
+export const Users = mongoose.model('Users', userSchema);

@@ -1,4 +1,4 @@
-import { FRIENDLY_ERRORS_RESPONSES } from "../utils/errors.js";
+import { FRIENDLY_ERRORS_RESPONSES } from '../utils/errors.js';
 
 /**
  * Envia uma mensagem de erro de endpoint desconhecido
@@ -9,4 +9,4 @@ import { FRIENDLY_ERRORS_RESPONSES } from "../utils/errors.js";
  */
 export const notFound = (request, reply) => {
     reply.code(404).send(FRIENDLY_ERRORS_RESPONSES.ENDPOINT_NOT_FOUND);
-}
+};

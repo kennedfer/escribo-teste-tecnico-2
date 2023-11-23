@@ -10,4 +10,4 @@ export const getCurrentDate = () => {
      * @returns {Date} O objeto Date representando a data e hora atuais.
      */
     return new Date(Date.now());
-}
+};

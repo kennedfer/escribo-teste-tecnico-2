@@ -14,13 +14,13 @@ export const createResponse = (user) => {
      * @property {string} token - O token do usuário, extraído da chave 'token'.
      */
     return {
-        id: user['_id'],
-        data_criacao: user['data_criacao'],
-        data_atualizacao: user['data_atualizacao'],
-        ultimo_login: user['ultimo_login'],
-        token: user["token"]
-    }
-}
+        id: user._id,
+        data_criacao: user.data_criacao,
+        data_atualizacao: user.data_atualizacao,
+        ultimo_login: user.ultimo_login,
+        token: user.token
+    };
+};
 
 /**
  * Cria um objeto de resposta com informações basicas do usuário.
@@ -39,5 +39,5 @@ export const createBasicResponse = (user) => {
         nome: user.nome,
         email: user.email,
         telefones: user.telefones
-    }
-}
+    };
+};

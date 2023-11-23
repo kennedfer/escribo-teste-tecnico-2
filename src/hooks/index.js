@@ -5,4 +5,4 @@
  * @property {Function} emailNotRegistered - Função que checa se o email está no registro.
  * @property {Function} dontHasAuthorizationHeader - Função que checa se o request tem o header 'Authorization'.
  */
-export * as usersHooks from './users-hooks.js'
+export * as usersHooks from './users-hooks.js';

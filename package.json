@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "cls && mocha --timeout 5000 src/tests/*.js",
-    "start": "cls && node src/app.js"
+    "start": "cls && node src/app.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "author": "kennedfer",
   "license": "ISC",
@@ -21,6 +23,11 @@
     "mongoose": "^7.5.3"
   },
   "devDependencies": {
+    "eslint": "^8.54.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.3.1",
+    "eslint-plugin-promise": "^6.1.1",
     "supertest": "^6.3.3"
   }
 }

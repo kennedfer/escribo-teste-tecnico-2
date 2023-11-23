@@ -1,7 +1,7 @@
-import assert from 'assert'
-import supertest from "supertest";
+import assert from 'assert';
+import supertest from 'supertest';
 
-import { FASTIFY } from "../app.js";
+import { FASTIFY } from '../app.js';
 import { Users } from '../models/models.js';
 import { SIGNUP_DATA, LOGIN_DATA, WRONG_LOGIN_DATA } from './utils/integration-test-utils.js';
 
@@ -31,7 +31,7 @@ describe('Testes de Integração:', () => {
      * @memberof Integration Tests
      * @group Teste Point-to-Point:
      */
-    describe("Teste Point-to-Point:", () => {
+    describe('Teste Point-to-Point:', () => {
         let token;
         let userId;
 
@@ -45,7 +45,7 @@ describe('Testes de Integração:', () => {
          */
         it('Deve cadastrar um novo usuário usando POST /signup', async () => {
             const response = await supertest(FASTIFY.server)
-                .post("/signup")
+                .post('/signup')
                 .send(SIGNUP_DATA);
 
             userId = response.body.id;
@@ -84,7 +84,7 @@ describe('Testes de Integração:', () => {
                 .get('/user')
                 .set('Authorization', `Bearer ${token}`); // Adiciona o token ao cabeçalho de autorização
 
-            await Users.findByIdAndDelete(userId);//Delata o user para que futuros testes não falhem
+            await Users.findByIdAndDelete(userId);// Delata o user para que futuros testes não falhem
             assert.strictEqual(response.status, 200);
         });
     });
@@ -94,7 +94,7 @@ describe('Testes de Integração:', () => {
      * @memberof Integration Tests
      * @group Teste Email Não Cadastrado:
      */
-    describe("Teste Email Já Cadastrado:", () => {
+    describe('Teste Email Já Cadastrado:', () => {
         let userId;
 
         /**
@@ -107,7 +107,7 @@ describe('Testes de Integração:', () => {
          */
         it('Deve cadastrar um novo usuário usando POST /signup', async () => {
             const response = await supertest(FASTIFY.server)
-                .post("/signup")
+                .post('/signup')
                 .send(SIGNUP_DATA);
 
             userId = response.body.id;
@@ -125,10 +125,10 @@ describe('Testes de Integração:', () => {
          */
         it('Deve receber um erro http 409 ao tentar cadastrar com email já usado em POST /signup', async () => {
             const response = await supertest(FASTIFY.server)
-                .post("/signup")
+                .post('/signup')
                 .send(SIGNUP_DATA);
 
-            await Users.findByIdAndDelete(userId);//Delata o user para que futuros testes não falhem
+            await Users.findByIdAndDelete(userId);// Delata o user para que futuros testes não falhem
             assert.strictEqual(response.status, 409);
             // Garante que a propriedade 'mensagem' está presente na resposta
             // pois a propriedade só está presente em caso de erros
@@ -141,8 +141,8 @@ describe('Testes de Integração:', () => {
      * @memberof Integration Tests
      * @group Teste Email Não Cadastrado:
      */
-    describe("Teste Email Não Cadastrado:", () => {
-        /**
+    describe('Teste Email Não Cadastrado:', () => {
+    /**
          * Testa o tratamento de erro ao tentar logar com e-mail não cadastrado em POST /login.
          * @function
          * @async
@@ -152,7 +152,7 @@ describe('Testes de Integração:', () => {
          */
         it('Deve receber um erro http 401 ao tentar logar com email não cadastrado em POST /login', async () => {
             const response = await supertest(FASTIFY.server)
-                .post("/login")
+                .post('/login')
                 .send(WRONG_LOGIN_DATA);
 
             assert.strictEqual(response.status, 401);
@@ -167,8 +167,8 @@ describe('Testes de Integração:', () => {
      * @memberof Integration Tests
      * @group Testes de Autenticação:
      */
-    describe("Testes de Autenticação:", () => {
-        /**
+    describe('Testes de Autenticação:', () => {
+    /**
          * Testa o tratamento de erro ao tentar entrar em /user sem o header "Authorization".
          * @function
          * @async
@@ -178,7 +178,7 @@ describe('Testes de Integração:', () => {
          */
         it('Deve receber um erro http 401 ao tentar entrar em /user sem o header "Authorization"', async () => {
             const response = await supertest(FASTIFY.server)
-                .get('/user')
+                .get('/user');
 
             assert.strictEqual(response.status, 401);
             // Garante que a propriedade 'mensagem' está presente na resposta
@@ -197,7 +197,7 @@ describe('Testes de Integração:', () => {
         it('Deve receber um erro http 401 ao tentar entrar em /user com token inválido', async () => {
             const response = await supertest(FASTIFY.server)
                 .get('/user')
-                .set('Authorization', "Bearer tokeninvalido");
+                .set('Authorization', 'Bearer tokeninvalido');
 
             assert.strictEqual(response.status, 401);
             // Garante que a propriedade 'mensagem' está presente na resposta
@@ -215,12 +215,12 @@ describe('Testes de Integração:', () => {
          */
         it('Deve receber um erro http 401 ao tentar logar com senha errada em POST /signup', async () => {
             const signupResponse = await supertest(FASTIFY.server)
-                .post("/signup")
+                .post('/signup')
                 .send(SIGNUP_DATA);
 
             const loginResponse = await supertest(FASTIFY.server)
-                .post("/login")
-                .send({ ...SIGNUP_DATA, senha: "senhaerrada" });
+                .post('/login')
+                .send({ ...SIGNUP_DATA, senha: 'senhaerrada' });
 
             assert.strictEqual(signupResponse.status, 201); // Garante que o cadastro aconteceu
             await Users.findByIdAndDelete(signupResponse.body.id);
@@ -237,8 +237,8 @@ describe('Testes de Integração:', () => {
      * @memberof Integration Tests
      * @group Teste Endpoint Desconhecido:
      */
-    describe("Teste Endpoint Desconhecido:", () => {
-        /**
+    describe('Teste Endpoint Desconhecido:', () => {
+    /**
          * Testa se a rota default funciona
          * @function
          * @async
@@ -248,7 +248,7 @@ describe('Testes de Integração:', () => {
          */
         it('Deve receber um erro http 404 ao tentar usar um endpoint desconhecido', async () => {
             const response = await supertest(FASTIFY.server)
-                .get("/endpoint-desconhecido")
+                .get('/endpoint-desconhecido');
 
             assert.strictEqual(response.status, 404);
             // Garante que a propriedade 'mensagem' está presente na resposta

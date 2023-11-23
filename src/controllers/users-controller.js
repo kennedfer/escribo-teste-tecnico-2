@@ -1,5 +1,5 @@
-import { usersHooks } from "../hooks/index.js";
-import { usersRoutes } from "../routes/index.js";
+import { usersHooks } from '../hooks/index.js';
+import { usersRoutes } from '../routes/index.js';
 
 /**
  * Controlador para as rotas relacionadas a usuários.
@@ -16,11 +16,11 @@ export const usersController = [
      */
     (fastify, options, done) => {
         fastify.post(
-            "/signup",
+            '/signup',
             {
                 preHandler: [
                     usersHooks.emailIsAlreadyUsed
-                ],
+                ]
             },
             usersRoutes.signupUser
         );
@@ -37,11 +37,11 @@ export const usersController = [
      */
     (fastify, options, done) => {
         fastify.post(
-            "/login",
+            '/login',
             {
                 preHandler: [
                     usersHooks.emailNotRegistered
-                ],
+                ]
             },
             usersRoutes.longinUser
         );
@@ -58,14 +58,14 @@ export const usersController = [
      */
     (fastify, options, done) => {
         fastify.get(
-            "/user",
+            '/user',
             {
                 preHandler: [
                     usersHooks.dontHasAuthorizationHeader
-                ],
+                ]
             },
             usersRoutes.getUser
         );
         done();
     }
-]
+];

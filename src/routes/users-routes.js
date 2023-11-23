@@ -11,7 +11,7 @@ import { dateUtils, encryptUtils, responseUtils, tokensUtils, usersUtils } from 
  */
 export const signupUser = async (request, reply) => {
     try {
-        /**
+    /**
          * Obtém a data e hora atuais.
          * @type {Date}
          */
@@ -42,20 +42,19 @@ export const signupUser = async (request, reply) => {
             await user.save();
 
             // Cria um token para o novo usuário.
-            user.token = tokensUtils.createToken({ id: user["_id"] });
+            user.token = tokensUtils.createToken({ id: user._id });
 
             // Envia uma resposta com os detalhes do usuário.
             reply.code(201).send(responseUtils.createResponse(user));
-
         } catch (error) {
             // Envia uma resposta de erro amigável em caso de falha no salvamento do usuário.
             reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
         }
     } catch (error) {
-        // Envia uma resposta de erro amigável em caso de erro geral.
+    // Envia uma resposta de erro amigável em caso de erro geral.
         reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR);
     }
-}
+};
 
 /**
  * Realiza o login de um usuário.
@@ -78,24 +77,23 @@ export const longinUser = async (request, reply) => {
     const user = await usersUtils.getUserByRequestEmail(request);
 
     try {
-        // Verifica se a senha fornecida não corresponde à senha armazenada.
+    // Verifica se a senha fornecida não corresponde à senha armazenada.
         const passwordNotMatch = !encryptUtils.match(senha, user.senha);
         if (passwordNotMatch) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
 
         // Atualiza a última data de login do usuário.
-        user["ultimo_login"] = dateUtils.getCurrentDate();
+        user.ultimo_login = dateUtils.getCurrentDate();
         await user.save();
 
         // o token é atribuido ao user para uso posterior, ele não é salvo
-        user.token = tokensUtils.createToken({ id: user["_id"] });
+        user.token = tokensUtils.createToken({ id: user._id });
 
         // Envia uma resposta com os detalhes do usuário.
         reply.send(responseUtils.createResponse(user));
-
     } catch (error) {
         reply.code(404).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
     }
-}
+};
 
 /**
  * Obtém informações de um usuário autenticado.
@@ -106,7 +104,7 @@ export const longinUser = async (request, reply) => {
  */
 export const getUser = async (request, reply) => {
     try {
-        // Verifica o token e obtém o ID do usuário.
+    // Verifica o token e obtém o ID do usuário.
         const userId = tokensUtils.verifyTokenAndGetId(request.token);
 
         // Busca o usuário no banco de dados com base no ID.
@@ -116,27 +114,26 @@ export const getUser = async (request, reply) => {
         if (usersUtils.userIsNull(user)) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
 
         // Atualiza a propriedade "data_atualizacao" do usuário para a data atual
-        user["data_atualizaca"] = dateUtils.getCurrentDate();
+        user.data_atualizaca = dateUtils.getCurrentDate();
         await user.save();
 
         // Envia as informações do usuário.
         reply.send(responseUtils.createBasicResponse(user));
-
     } catch (error) {
-        // Trata diferentes erros relacionados a tokens.
+    // Trata diferentes erros relacionados a tokens.
         switch (error.name) {
-            case 'TokenExpiredError': {
-                reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EXPIRED_TOKEN);
-                break;
-            }
-            case 'JsonWebTokenError': {
-                reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
-                break;
-            }
-            default: {
-                // Envia uma resposta de erro amigável em caso de falha geral.
-                reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
-            }
+        case 'TokenExpiredError': {
+            reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EXPIRED_TOKEN);
+            break;
+        }
+        case 'JsonWebTokenError': {
+            reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
+            break;
+        }
+        default: {
+        // Envia uma resposta de erro amigável em caso de falha geral.
+            reply.code(500).send(FRIENDLY_ERRORS_RESPONSES.INTERNAL_SERVER_ERROR_TRY_AGAIN);
+        }
         }
     }
-}
+};

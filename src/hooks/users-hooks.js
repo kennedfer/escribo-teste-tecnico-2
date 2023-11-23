@@ -1,5 +1,5 @@
-import { FRIENDLY_ERRORS_RESPONSES } from "../utils/errors.js";
-import { usersUtils } from "../utils/index.js";
+import { FRIENDLY_ERRORS_RESPONSES } from '../utils/errors.js';
+import { usersUtils } from '../utils/index.js';
 
 /**
  * Verifica se o e-mail já está em uso por outro usuário.
@@ -17,7 +17,7 @@ export const emailIsAlreadyUsed = async (request, reply) => {
 
     // Verifica se o usuário já existe e envia uma resposta se for o caso.
     if (usersUtils.userIsNotNull(user)) reply.code(409).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_ALREADY_USED);
-}
+};
 
 /**
  * Verifica se o e-mail não está registrado no sistema.
@@ -35,7 +35,7 @@ export const emailNotRegistered = async (request, reply) => {
 
     // Verifica se o usuário não existe e envia uma resposta amigável se for o caso.
     if (usersUtils.userIsNull(user)) reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.EMAIL_NOT_REGISTERED_OR_WRONG_PASSWORD);
-}
+};
 
 /**
  * Verifica se a requisição não contém o cabeçalho de autorização.
@@ -46,9 +46,8 @@ export const emailNotRegistered = async (request, reply) => {
  */
 export const dontHasAuthorizationHeader = async (request, reply) => {
     // Verifica se o cabeçalho de autorização está ausente e envia uma resposta amigável se for o caso.
-    if (!request.headers.authorization)
-        reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN);
+    if (!request.headers.authorization) { reply.code(401).send(FRIENDLY_ERRORS_RESPONSES.INVALID_TOKEN); }
 
     // Substitui "Bearer " no cabeçalho de autorização para obter o token.
     request.token = request.headers.authorization.replace(/^Bearer\s/, '');
-}
+};

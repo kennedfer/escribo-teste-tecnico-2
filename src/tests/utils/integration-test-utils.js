@@ -7,11 +7,11 @@
  * @property {Array} telefones - Lista de números de telefone do usuário.
  */
 export const SIGNUP_DATA = {
-    nome: "meunome",
-    email: "meuemail@gmail.com",
-    senha: "minhasenha",
+    nome: 'meunome',
+    email: 'meuemail@gmail.com',
+    senha: 'minhasenha',
     telefones: []
-}
+};
 
 /**
  * Dados para simular o processo de login de usuário.
@@ -31,6 +31,6 @@ export const LOGIN_DATA = {
  * @property {string} senha - Senha incorreta.
  */
 export const WRONG_LOGIN_DATA = {
-    email: "emaildesconhecido@gmail.com",
-    senha: "senhaincorreta"
+    email: 'emaildesconhecido@gmail.com',
+    senha: 'senhaincorreta'
 };

@@ -1,4 +1,4 @@
-import { Users } from "../models/models.js";
+import { Users } from '../models/models.js';
 
 /**
  * Verifica se um objeto de usuário é nulo
@@ -7,7 +7,7 @@ import { Users } from "../models/models.js";
  */
 export const userIsNull = (user) => {
     return user == null;
-}
+};
 
 /**
  * Verifica se um objeto de usuário não é nulo
@@ -17,7 +17,7 @@ export const userIsNull = (user) => {
  */
 export const userIsNotNull = (user) => {
     return user != null;
-}
+};
 
 /**
  * Obtém um usúario com base no email do RequestBody
@@ -37,7 +37,7 @@ export const getUserByRequestEmail = async (request) => {
      * @type {User | null}
      */
     return await Users.findOne({ email });
-}
+};
 
 /**
  * Obtém um usúario com base no id fornecido
@@ -50,5 +50,5 @@ export const getUserById = async (id) => {
      * Busca um usuário no banco de dados com base no id fornecido e o retorna.
      * @type {User | null}
      */
-    return await Users.findById(id)
-}
+    return await Users.findById(id);
+};

@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
 /**
  * Número de rounds para a geração de sal usado no algoritmo de hash.
@@ -20,7 +20,7 @@ export const hashEncrypt = (data) => {
      * @returns {string} O hash bcrypt gerado.
      */
     return bcrypt.hashSync(data, SALT_ROUNDS);
-}
+};
 
 /**
  * Compara dados com um hash bcrypt para verificar correspondência.
@@ -37,4 +37,4 @@ export const match = (data, encryptData) => {
      * @returns {boolean} true se os dados correspondem ao hash, false caso contrário.
      */
     return bcrypt.compareSync(data, encryptData);
-}
+};

@@ -11,7 +11,7 @@ dotenv.config();
  * Cria uma instância do Fastify.
  * @constant {Object} fastify
  */
-export const FASTIFY = Fastify({ logger: false });
+export const FASTIFY = Fastify({ logger: true });
 
 // Permite que sejam aceitas requisições de qualquer origem
 FASTIFY.register(fastifyCors, {

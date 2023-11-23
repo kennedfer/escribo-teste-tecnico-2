@@ -235,14 +235,14 @@ describe('Testes de Integração:', () => {
     /**
      * Teste para verificar o se a rota deafult para quando o endpoint for desconhecido esta funcionando
      * @memberof Integration Tests
-     * @group Teste Email Não Cadastrado:
+     * @group Teste Endpoint Desconhecido:
      */
-    describe("Teste Email Não Cadastrado:", () => {
+    describe("Teste Endpoint Desconhecido:", () => {
         /**
          * Testa se a rota default funciona
          * @function
          * @async
-         * @memberof Teste Email Não Cadastrado:
+         * @memberof Teste Endpoint Desconhecido:
          * @name Deve receber um erro http 404 ao tentar usar um endpoint desconhecido
          * @returns {Promise<void>}
          */

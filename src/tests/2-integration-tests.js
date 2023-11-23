@@ -29,9 +29,9 @@ describe('Testes de Integração:', () => {
     /**
      * Teste ponto a ponto.
      * @memberof Integration Tests
-     * @group Point-to-Point Tests
+     * @group Teste Point-to-Point:
      */
-    describe("Teste Point 2 Point:", () => {
+    describe("Teste Point-to-Point:", () => {
         let token;
         let userId;
 
@@ -39,7 +39,7 @@ describe('Testes de Integração:', () => {
          * Testa o processo de cadastro de um novo usuário usando POST /signup.
          * @function
          * @async
-         * @memberof Point-to-Point Tests
+         * @memberof Teste Point-to-Point:
          * @name Deve cadastrar um novo usuário usando POST /signup
          * @returns {Promise<void>}
          */
@@ -57,7 +57,7 @@ describe('Testes de Integração:', () => {
          * Testa o processo de login usando POST /login.
          * @function
          * @async
-         * @memberof Point-to-Point Tests
+         * @memberof Teste Point-to-Point:
          * @name Deve realizar o login usando POST /login
          * @returns {Promise<void>}
          */
@@ -75,7 +75,7 @@ describe('Testes de Integração:', () => {
          * Testa a obtenção de informações básicas do usuário usando GET /user.
          * @function
          * @async
-         * @memberof Point-to-Point Tests
+         * @memberof Teste Point-to-Point:
          * @name Deve obter informações básicas do usuário usando GET /user
          * @returns {Promise<void>}
          */
@@ -92,7 +92,7 @@ describe('Testes de Integração:', () => {
     /**
      * Teste para verificar o tratamento de erro ao cadastrar com um e-mail já cadastrado.
      * @memberof Integration Tests
-     * @group Email Already Registered Test
+     * @group Teste Email Não Cadastrado:
      */
     describe("Teste Email Já Cadastrado:", () => {
         let userId;
@@ -101,7 +101,7 @@ describe('Testes de Integração:', () => {
          * Testa o processo de cadastro de um novo usuário usando POST /signup.
          * @function
          * @async
-         * @memberof Email Already Registered Test
+         * @memberof Teste Email Não Cadastrado:
          * @name Deve cadastrar um novo usuário usando POST /signup
          * @returns {Promise<void>}
          */
@@ -119,7 +119,7 @@ describe('Testes de Integração:', () => {
          * Testa o tratamento de erro ao tentar cadastrar com um e-mail já usado em POST /signup.
          * @function
          * @async
-         * @memberof Email Already Registered Test
+         * @memberof Teste Email Não Cadastrado:
          * @name Deve receber um erro http 409 ao tentar cadastrar com email já usado em POST /signup
          * @returns {Promise<void>}
          */
@@ -139,14 +139,14 @@ describe('Testes de Integração:', () => {
     /**
      * Teste para verificar o tratamento de erro ao tentar fazer login com e-mail não cadastrado.
      * @memberof Integration Tests
-     * @group Email Not Registered Test
+     * @group Teste Email Não Cadastrado:
      */
     describe("Teste Email Não Cadastrado:", () => {
         /**
          * Testa o tratamento de erro ao tentar logar com e-mail não cadastrado em POST /login.
          * @function
          * @async
-         * @memberof Email Not Registered Test
+         * @memberof Teste Email Não Cadastrado:
          * @name Deve receber um erro http 401 ao tentar logar com email não cadastrado em POST /login
          * @returns {Promise<void>}
          */
@@ -165,14 +165,14 @@ describe('Testes de Integração:', () => {
     /**
      * Testes de autenticação.
      * @memberof Integration Tests
-     * @group Authentication Tests
+     * @group Testes de Autenticação:
      */
     describe("Testes de Autenticação:", () => {
         /**
          * Testa o tratamento de erro ao tentar entrar em /user sem o header "Authorization".
          * @function
          * @async
-         * @memberof Authentication Tests
+         * @memberof Testes de Autenticação:
          * @name Deve receber um erro http 401 ao tentar entrar em /user sem o header "Authorization"
          * @returns {Promise<void>}
          */
@@ -190,7 +190,7 @@ describe('Testes de Integração:', () => {
          * Testa o tratamento de erro ao tentar entrar em /user com token inválido.
          * @function
          * @async
-         * @memberof Authentication Tests
+         * @memberof Testes de Autenticação:
          * @name Deve receber um erro http 401 ao tentar entrar em /user com token inválido
          * @returns {Promise<void>}
          */
@@ -209,7 +209,7 @@ describe('Testes de Integração:', () => {
          * Testa o tratamento de erro ao tentar logar com senha errada em POST /signup.
          * @function
          * @async
-         * @memberof Authentication Tests
+         * @memberof Testes de Autenticação:
          * @name Deve receber um erro http 401 ao tentar logar com senha errada em POST /signup
          * @returns {Promise<void>}
          */
@@ -229,6 +229,31 @@ describe('Testes de Integração:', () => {
             // Garante que a propriedade 'mensagem' está presente na resposta
             // pois a propriedade só está presente em caso de erros
             assert.ok(loginResponse.body.mensagem);
+        });
+    });
+
+    /**
+     * Teste para verificar o se a rota deafult para quando o endpoint for desconhecido esta funcionando
+     * @memberof Integration Tests
+     * @group Teste Email Não Cadastrado:
+     */
+    describe("Teste Email Não Cadastrado:", () => {
+        /**
+         * Testa se a rota default funciona
+         * @function
+         * @async
+         * @memberof Teste Email Não Cadastrado:
+         * @name Deve receber um erro http 404 ao tentar usar um endpoint desconhecido
+         * @returns {Promise<void>}
+         */
+        it('Deve receber um erro http 404 ao tentar usar um endpoint desconhecido', async () => {
+            const response = await supertest(FASTIFY.server)
+                .get("/endpoint-desconhecido")
+
+            assert.strictEqual(response.status, 404);
+            // Garante que a propriedade 'mensagem' está presente na resposta
+            // pois a propriedade só está presente em caso de erros
+            assert.ok(response.body.mensagem);
         });
     });
 });

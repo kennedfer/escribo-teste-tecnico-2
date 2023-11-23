@@ -35,22 +35,23 @@ FASTIFY.setNotFoundHandler(notFoundRoute.notFound);
  */
 usersController.forEach(controller => FASTIFY.register(controller));
 
-/**
- * Conecta-se ao banco de dados MongoDB via mongoose usando a URI fornecida no arquivo de ambiente.
- * @method
- * @param {string} process.env.MONGODB_URI - A URI do MongoDB obtida do arquivo de ambiente.
- * @returns {void}
- */
-mongoose.connect(process.env.MONGODB_URI);
-
-/**
- * Inicia o servidor Fastify, escutando na porta fornecida no arquivo de ambiente ou na porta 3000 por padrão.
- * @method
- * @param {Object} process.env.PORT - A porta obtida do arquivo de ambiente ou padrão para 3000.
- * @returns {void}
- */
-
 try {
+
+    /**
+     * Conecta-se ao banco de dados MongoDB via mongoose usando a URI fornecida no arquivo de ambiente.
+     * @method
+     * @param {string} process.env.MONGODB_URI - A URI do MongoDB obtida do arquivo de ambiente.
+     * @returns {void}
+     */
+    mongoose.connect(process.env.MONGODB_URI);
+
+    /**
+     * Inicia o servidor Fastify, escutando na porta fornecida no arquivo de ambiente ou na porta 3000 por padrão.
+     * @method
+     * @param {Object} process.env.PORT - A porta obtida do arquivo de ambiente ou padrão para 3000.
+     * @returns {void}
+     */
+
     FASTIFY.listen({ port: process.env.PORT || 3000 });
 } catch (error) {
     console.log(error);

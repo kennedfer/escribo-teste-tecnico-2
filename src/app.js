@@ -35,8 +35,6 @@ FASTIFY.setNotFoundHandler(notFoundRoute.notFound);
  */
 usersController.forEach(controller => FASTIFY.register(controller));
 
-try {
-
     /**
      * Conecta-se ao banco de dados MongoDB via mongoose usando a URI fornecida no arquivo de ambiente.
      * @method

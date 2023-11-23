@@ -52,7 +52,13 @@ try {
      * @returns {void}
      */
 
-    FASTIFY.listen({ port: process.env.PORT || 3000 });
+    FASTIFY.listen({ port: process.env.PORT || 3000 , '0.0.0.0', (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server listening on ${address}`);
+});
 } catch (error) {
     console.log(error);
 }
